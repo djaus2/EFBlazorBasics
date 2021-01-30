@@ -1,8 +1,8 @@
 ﻿@page "/fetchdata"
-
 @using EFBlazorBasics.Data
+@inject HelperService service
 @inject WeatherForecastService ForecastService
-@*@inject HelperService service*@
+
 
 <h1>Weather forecast</h1>
 
@@ -43,6 +43,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
-        //var activitys = await service.GetActivitys();
+        var activitys = await service.GetActivitys();
     }
 }

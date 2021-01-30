@@ -13,9 +13,9 @@ namespace EFBlazorBasics.Data
         {
         }
 
-        //public DbSet<Activity> Activitys { get; set; }
-        //public DbSet<Helper> Helpers { get; set; }
-        //public DbSet<Round> Rounds { get; set; }
+        public DbSet<Activity> Activitys { get; set; }
+        public DbSet<Helper> Helpers { get; set; }
+        public DbSet<Round> Rounds { get; set; }
 
     }
 }
