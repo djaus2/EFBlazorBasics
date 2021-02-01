@@ -56,7 +56,7 @@ namespace EFBlazorBasics.Data.Migrations
                         column: x => x.RoundId,
                         principalTable: "Rounds",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+
 namespace EFBlazorBasics.Data
 {
     public class Helper
@@ -23,6 +25,8 @@ namespace EFBlazorBasics.Data
         [Column("No")]
         [Required]
         public int No { get; set; }
+
+        public IList<Activity> Activitys { get; } = new List<Activity>();
     }
 
     public class Activity
