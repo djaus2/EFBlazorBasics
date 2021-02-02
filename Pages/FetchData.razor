@@ -97,78 +97,16 @@ else
         </table>
     }
 
-<EditForm Model="@values">
-    <table class="table">
-        <tr>
-            <td>
-                <button @onclick="@DeleteRound">Delete Round</button>
-            </td>
-            <td>
-                <InputNumber @bind-Value="values.Round" />
-            </td>
-        </tr>
-    </table>
-    <table class="table">
-        <tr>
-            <td>
-                <button @onclick="@DeleteActivity">Delete Activity</button>
-            </td>
-            <td>
-                <InputNumber @bind-Value="values.Activity" />
-            </td>
-        </tr>
-    </table>
-    <table class="table">
-        <tr>
-            <td>
-                <button @onclick="@DeleteHelper">Delete Helper</button>
-            </td>
-            <td>
-                <InputNumber @bind-Value="values.Helper" />
-            </td>
-        </tr>
-    </table>
-</EditForm>
-
-
-
 @code {
     private List<Activity> Activitys;
     private List<Helper> Helpers;
     private List<Round> Rounds;
-
-    public class Values
-    {
-        public int Round { get; set; } = 1;
-        public int Helper { get; set; } = 1;
-        public int Activity { get; set; } = 1;
-    }
-
-    private Values values = new Values();
 
     async Task UpdateData()
     {
         Activitys = await service.GetActivitys();
         Helpers = await service.GetHelpers();
         Rounds = await service.GetRounds();
-    }
-
-    protected async Task DeleteRound()
-    {
-        await service.DeleteRound(values.Round);
-        await UpdateData();
-    }
-
-    protected async Task DeleteHelper()
-    {
-        await service.DeleteHelper(values.Helper);
-        await UpdateData();
-    }
-
-    protected async Task DeleteActivity()
-    {
-        await service.DeleteActivity(values.Activity);
-        await UpdateData();
     }
 
     protected override async Task OnInitializedAsync()
@@ -180,9 +118,5 @@ else
         }
         await UpdateData();
 
-        //await service.DeleteRound(1);
-        //await service.DeleteRound(2);
-        //await service.DeleteRound(3);
-        //Activitys = await service.GetActivitys();
     }
 }
