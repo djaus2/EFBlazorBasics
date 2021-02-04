@@ -1,7 +1,12 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<h1>Helpers App</h1>
 
-Welcome to your new app.
+See Entity Framework Core functionality on FetchData page.<br/>
+Demonstrates CRUD operations in the Helpers App context.<br/> 
+Includes Cascade delete and other features.<br/> 
+<ul>
+    <li>Note that deletion of a Round deletes any activity in that round ... <b>Cascade Delete</b></li>
+    <li>Whereas deletion of a Helper does not delete an activity that that Helper has volunteered for.<br/> It nulls that entry in the activity. </li>
+</ul>
 
-<SurveyPrompt Title="How is Blazor working for you?" />

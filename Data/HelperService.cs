@@ -13,6 +13,7 @@ namespace EFBlazorBasics.Data
         Task<List<Helper>> GetHelpers();
         Task<List<Round>> GetRounds();
         Task AddSomeData();
+        Task AddActivitys(List<Activity> activitys);
         Task AddRounds(List<Round> rounds);
         Task AddHelpers(List<Helper> helpers);
         Task DeleteHelper(int Id);
@@ -63,9 +64,21 @@ namespace EFBlazorBasics.Data
 
         public async Task AddActivitys(List<Activity> activitys)
         {
+            // Clear the database
+            if (_context.Rounds.Count() != 0)
+                _context.Rounds.RemoveRange(_context.Rounds.ToList());
+            if (_context.Helpers.Count() != 0)
+                _context.Helpers.RemoveRange(_context.Helpers.ToList());
+            if (_context.Activitys.Count() != 0)
+                _context.Activitys.RemoveRange(_context.Activitys.ToList());
+            await _context.SaveChangesAsync();
+
+            // Reset the seeds
             await _context.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT('Rounds', RESEED, 0)");
-            await _context.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT('Rounds', RESEED, 0)");
+            await _context.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT('Helpers', RESEED, 0)");
             await _context.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT('Activitys', RESEED, 0)");
+            
+            // Add some data
             _context.Activitys.AddRange(activitys);
             await _context.SaveChangesAsync();
         }
@@ -101,20 +114,9 @@ namespace EFBlazorBasics.Data
             }
         }
 
-
-        string RoundsJson = "[{\"No\":1},{\"No\":2},{ \"No\":3}]";
-
-        string HelpersJson = "[{\"Name\":\"John Marshall\"},{ \"Name\":\"Sue Burrows\"},{ \"Name\":\"Jimmy Beans\"}]";
-
         string ActivitysJson = "[{\"Round\":{\"No\":1},\"Helper\":{\"Name\":\"John Marshall\"}, \"Task\":\"Shot Put\"},{ \"Round\":{ \"No\":2},\"Helper\":{ \"Name\":\"Sue Burrows\"},\"Task\":\"Marshalling\"},{ \"Round\":{ \"No\":3},\"Helper\":{ \"Name\":\"Jimmy Beans\"},\"Task\":\"Discus\"}]";
         public async Task AddSomeData()
         {
-            //var rounds = JsonConvert.DeserializeObject<List<Round>>(RoundsJson);
-            //await AddRounds(rounds);
-
-            //var helpers = JsonConvert.DeserializeObject<List<Helper>>(HelpersJson);
-            //await AddHelpers(helpers);
-
            var activitys = JsonConvert.DeserializeObject<List<Activity>>(ActivitysJson);
             await AddActivitys(activitys);
         }

@@ -3,7 +3,7 @@
 @inject IHelperService service
 
 
-<h1>Weather forecast</h1>
+<h1>Helper Volunteers</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
@@ -174,15 +174,16 @@ else
     protected override async Task OnInitializedAsync()
     {
         Activitys = await service.GetActivitys();
-        if (Activitys.Count() == 0)
+        if (Activitys==null)
         {
             await service.AddSomeData();
         }
+        else if (Activitys.Count() == 0)
+        {
+            await service.AddSomeData();
+        }
+        await service.AddSomeData();
         await UpdateData();
 
-        //await service.DeleteRound(1);
-        //await service.DeleteRound(2);
-        //await service.DeleteRound(3);
-        //Activitys = await service.GetActivitys();
     }
 }
