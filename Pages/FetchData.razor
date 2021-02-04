@@ -44,63 +44,124 @@ else
     </table>
 }
 
+    
 
-    <h2>Helpers</h2>
-    @if (Helpers == null)
-    {
-        <p><em>Loading Helpers...</em></p>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
+<h2>Helpers</h2>
+@if (Helpers == null)
+{
+    <p><em>Loading Helpers...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var hlpr in Helpers)
+            {
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
+                    <td>@hlpr.Id</td>
+                    <td>@hlpr.Name</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var hlpr in Helpers)
-                {
-                    <tr>
-                        <td>@hlpr.Id</td>
-                        <td>@hlpr.Name</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
+            }
+        </tbody>
+    </table>
+}
 
-    <h2>Rounds</h2>
-    @if (Rounds == null)
-    {
-        <p><em>Loading Rounds...</em></p>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
+<h2>Rounds</h2>
+@if (Rounds == null)
+{
+    <p><em>Loading Rounds...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Round No.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var round in Rounds)
+            {
                 <tr>
-                    <th>Id</th>
-                    <th>Round No.</th>
+                    <td>@round.Id</td>
+                    <td>@round.No</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var round in Rounds)
-                {
-                    <tr>
-                        <td>@round.Id</td>
-                        <td>@round.No</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
+            }
+        </tbody>
+    </table>
+}
+
+<EditForm Model="@values">
+    <table class="table">
+        <tr>
+            <td>
+                <button @onclick="@DeleteRound">Delete Round</button>
+            </td>
+            <td>
+                <InputNumber @bind-Value="values.RoundId" />
+            </td>
+        </tr>
+    </table>
+    <table class="table">
+        <tr>
+            <td>
+                <button @onclick="@DeleteActivity">Delete Activity</button>
+            </td>
+            <td>
+                <InputNumber @bind-Value="values.ActivityId" />
+            </td>
+        </tr>
+    </table>
+    <table class="table">
+        <tr>
+            <td>
+                <button @onclick="@DeleteHelper">Delete Helper</button>
+            </td>
+            <td>
+                <InputNumber @bind-Value="values.HelperId" />
+            </td>
+        </tr>
+    </table>
+</EditForm>
+
 
 @code {
     private List<Activity> Activitys;
     private List<Helper> Helpers;
     private List<Round> Rounds;
+
+    public class Values {
+        public int ActivityId {get; set;} = 1;
+        public int RoundId {get; set;} = 1;
+        public int HelperId {get ;set;} = 1;
+    }
+
+    public Values values { get; set; } = new Values();
+
+    private async Task DeleteRound()
+    {
+        await service.DeleteRound(values.RoundId);
+        await UpdateData();
+    }
+
+    private async Task DeleteHelper()
+    {
+        await service.DeleteHelper(values.HelperId);
+        await UpdateData();
+    }
+
+    private async Task DeleteActivity()
+    {
+        await service.DeleteActivity(values.ActivityId);
+        await UpdateData();
+    }
 
     async Task UpdateData()
     {
@@ -111,6 +172,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        values  = new Values();
         Activitys = await service.GetActivitys();
         if (Activitys==null)
         {

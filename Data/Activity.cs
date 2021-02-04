@@ -25,6 +25,8 @@ namespace EFBlazorBasics.Data
         [Column("No")]
         [Required]
         public int No { get; set; }
+
+        public IList<Activity> Activitys { get; } = new List<Activity>();
     }
 
     public class Activity
@@ -43,6 +45,7 @@ namespace EFBlazorBasics.Data
         [Column("Task")]
         [Required]
         public string Task { get; set; }
+
     }
 }
 
