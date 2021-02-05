@@ -54,3 +54,6 @@ This version of the app only displays the sample data in that razor page
 | 1      | 1             |
 | 2      | 2             |
 | 3      | 3             |
+
+| Next: See the **CRUD** branch of the repository. |
+| Link: [CRUD branch of djaus2/EFBlazorBasics on GitHub](https://github.com/djaus2/EFBlazorBasics/tree/CRUD) |
