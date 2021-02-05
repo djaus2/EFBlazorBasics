@@ -24,8 +24,3 @@ This demonstrates that the database exists.
 | Link: [Add-Some-Data branch of djaus2/EFBlazorBasics on GitHub](https://github.com/djaus2/EFBlazorBasics/tree/Add-Some-Data) |
 
 
-| **Id** | **Round** | **Helper**  | **Task** |
-|--------|-----------|-------------|----------|
-| 1      | 1         | John Marshall | Shot Put   |
-| 2      | 2         | Sue Burrows | Marshalling   |
-| 3      | 3         | Jimmy Beans | Discus   |
