@@ -18,6 +18,14 @@ The creation of an empty SQL Server database is demonstrated
 This demonstrates that the database exists.
 
 | Activitys has been created, but is empty. |
+|-------------------------------------------|
 | List length= 0 |
 | Next: See the **Add-Some-Data** branch of the repository. |
 | Link: [Add-Some-Data branch of djaus2/EFBlazorBasics on GitHub](https://github.com/djaus2/EFBlazorBasics/tree/Add-Some-Data) |
+
+
+| **Id** | **Round** | **Helper**  | **Task** |
+|--------|-----------|-------------|----------|
+| 1      | 1         | John Marshall | Shot Put   |
+| 2      | 2         | Sue Burrows | Marshalling   |
+| 3      | 3         | Jimmy Beans | Discus   |
