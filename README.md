@@ -47,8 +47,8 @@ It nulls that entry in the activity.
 
 | **Action**    |   |
 |-----------------|---|
-| [Delete Round]    |  3 |
-| [Delete Activity] | 3  |
+| [Delete Round]    |  1 |
+| [Delete Activity] | 2  |
 |[Delete Helper]   | 3  |
 
 
