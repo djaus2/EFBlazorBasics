@@ -9,7 +9,7 @@ This version of the app is about generating the new database in SQL Server.
 Code-First with Entity Framework Core is used.  
 The creation of empty SQL Server database is demonstrated
 
-<br/>
+<hr/>
 
 ## The Generated UI
 
