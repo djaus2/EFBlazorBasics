@@ -112,7 +112,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         Activitys = await service.GetActivitys();
-        if (Activitys.Count() == 0)
+        if ((Activitys==null) ||(Activitys.Count() == 0))
         {
             await service.AddSomeData();
         }

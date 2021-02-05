@@ -1,7 +1,13 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<h1>Helpers App: Add Some Data</h1>
+<p>This is the **Add-Some-Data** branch of the EFBlazorBasic repository at <a href="https://github.com/djaus2/EFBlazorBasics">djaus2/EFBlazorBasics on GitHub</a></p>
 
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+See Entity Framework Core functionality on **FetchData** page.<br/>
+When the **FetchData** page is loaded, or refreshed, a call is made to get the Activitys list.<br/> 
+If the Activitys is empty, a call is made to generate the data.<br/>
+This is done via a Json string deserialization and saved to the database.<br/>
+<br/>
+The three entity lists are then loaded.<br/>
+<br/>
+This version of the app only displays the sample data in that razor page.<br/>
