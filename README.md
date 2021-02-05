@@ -8,7 +8,7 @@ Includes generating a list of objects from Json which which have referenced list
 
 Replaces WeatherForecast with Helper Data.
 
-See the Entity Framework Core functionality on FetchData page.
+See the Entity Framework Core functionality on the FetchData page.
 Demonstrates CRUD operations in the Helpers App context.
 There are three entities:  
 - Activity
@@ -16,13 +16,15 @@ There are three entities:
 - Round
 
 A Helper volunteers for an activity.  
-An Activity has a Round and a nullable Helper (no Helper has volunteered).  
+An Activity has Task, a Round and a nullable Helper (no Helper has volunteered).  
 
-When the page is opened, a call is made to get the current entity lists.  
+When the page is opened, or refreshed, a call is made to get the Activitys list.  
 If the Activitys is empty, a call is made to generate the data.
 This is done via a Json string deserialization and saved to the database.
-Before that, if there are any threads still in the database then those records are deleted.
+> Before that, if there are any threads still in the database then those records are deleted.
 Also the table Id seeds are zeroed.  
+
+The three lists are then loaded.
 
 There are buttons on the page to delete items.  
 
