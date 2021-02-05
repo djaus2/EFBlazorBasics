@@ -11,9 +11,9 @@ The creation of empty SQL Server database is demonstrated
 
 <br/>
 
-**The Generated UI
+## The Generated UI
 
-*** Helpers App: Basic
+### Helpers App: Basic
 
 This demonstrates that the databse exists.
 
