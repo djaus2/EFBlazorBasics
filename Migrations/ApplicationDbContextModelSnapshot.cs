@@ -4,16 +4,14 @@ using EFBlazorBasics.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace EFBlazorBasics.Data.Migrations
+namespace EFBlazorBasics.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210130014717_AddEntities")]
-    partial class AddEntities
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +30,7 @@ namespace EFBlazorBasics.Data.Migrations
                     b.Property<int?>("HelperId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RoundId")
+                    b.Property<int>("RoundId")
                         .HasColumnType("int");
 
                     b.Property<string>("Task")
@@ -291,8 +289,10 @@ namespace EFBlazorBasics.Data.Migrations
                         .HasForeignKey("HelperId");
 
                     b.HasOne("EFBlazorBasics.Data.Round", "Round")
-                        .WithMany()
-                        .HasForeignKey("RoundId");
+                        .WithMany("Activitys")
+                        .HasForeignKey("RoundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Helper");
 
@@ -348,6 +348,11 @@ namespace EFBlazorBasics.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EFBlazorBasics.Data.Round", b =>
+                {
+                    b.Navigation("Activitys");
                 });
 #pragma warning restore 612, 618
         }

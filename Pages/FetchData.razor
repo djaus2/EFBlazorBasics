@@ -174,15 +174,10 @@ else
     {
         values  = new Values();
         Activitys = await service.GetActivitys();
-        if (Activitys==null)
+        if ((Activitys==null) || (Activitys.Count() == 0))
         {
             await service.AddSomeData();
         }
-        else if (Activitys.Count() == 0)
-        {
-            await service.AddSomeData();
-        }
-        await service.AddSomeData();
         await UpdateData();
 
     }
