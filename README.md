@@ -30,7 +30,7 @@ There are buttons on the page to delete items.
 
 Includes Cascade delete and other features.  
 Note that deletion of a Round deletes any activity in that round ... Cascade Delete.  
-Whereas deletion of a Helper does not delete an activity that that Helper has volunteered for.
+Whereas deletion of a Helper does not delete an activity that the Helper has volunteered for.
 It nulls that entry in the activity.
 
 <hr/>
