@@ -10,8 +10,24 @@ Replaces WeatherForecast with Helper Data.
 
 See the Entity Framework Core functionality on FetchData page.
 Demonstrates CRUD operations in the Helpers App context.
-Includes Cascade delete and other features.
-Note that deletion of a Round deletes any activity in that round ... Cascade Delete
+There are three entities:  
+- Activity
+- Helper
+- Round
+
+A Helper volunteers for an activity.  
+An Activity has a Round and a nullable Helper (no Helper has volunteered).  
+
+When the page is opened, a call is made to get the current entity lists.  
+If the Activitys is empty, a call is made to generate the data.
+This is done via a Json string deserialization and saved to the database.
+Before that, if there are any threads still in the database then those records are deleted.
+Also the table Id seeds are zeroed.  
+
+There are buttons on the page to delete items.  
+
+Includes Cascade delete and other features.  
+Note that deletion of a Round deletes any activity in that round ... Cascade Delete.  
 Whereas deletion of a Helper does not delete an activity that that Helper has volunteered for.
 It nulls that entry in the activity.
 
