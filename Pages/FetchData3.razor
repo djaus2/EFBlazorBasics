@@ -1,9 +1,9 @@
-﻿@page "/fetchdata"
+﻿@page "/fetchdata3"
 @using EFBlazorBasics.Data
 @inject IHelperService service
 
 
-<h1>Helper Volunteers</h1>
+<h1>Helper Volunteers - Cascade Add Db Save</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
@@ -98,36 +98,28 @@ else
     </table>
 }
 
-<EditForm Model="@values">
-    <table class="table">
-        <tr>
+<EditForm Model="@values">    
+   <table class=" table">
+       <tr>
+            @if (!((string.IsNullOrEmpty(values.newName)) 
+                || CheckRound()
+                || (string.IsNullOrEmpty(values.newTask))))
+            {
+                <td><button @onclick="@AddActivity">Add New Activity</button></td>
+            }
+            else {
+                <td><i>Please new enter Values:</i></td> 
+            }
+           <td>
+               <b><i>Round No:</i></b>&nbsp;<InputNumber @bind-Value="values.newRoundNo" />
+           </td>
             <td>
-                <button @onclick="@DeleteRound">Delete Round</button>
+                <b><i>New Helper Name:</i></b>&nbsp;<InputText @bind-Value="values.newName" />
             </td>
             <td>
-                <InputNumber @bind-Value="values.RoundId" />
+                <b><i>New Task:</i></b>&nbsp;<InputText @bind-Value="values.newTask" />
             </td>
-        </tr>
-    </table>
-    <table class="table">
-        <tr>
-            <td>
-                <button @onclick="@DeleteActivity">Delete Activity</button>
-            </td>
-            <td>
-                <InputNumber @bind-Value="values.ActivityId" />
-            </td>
-        </tr>
-    </table>
-    <table class="table">
-        <tr>
-            <td>
-                <button @onclick="@DeleteHelper">Delete Helper</button>
-            </td>
-            <td>
-                <InputNumber @bind-Value="values.HelperId" />
-            </td>
-        </tr>
+       </tr>
     </table>
 </EditForm>
 
@@ -138,10 +130,14 @@ else
     private List<Round> Rounds;
 
     public class Values {
-        public int ActivityId {get; set;} = 1;
-        public int RoundId {get; set;} = 1;
-        public int HelperId {get ;set;} = 1;
+        public int ActivityId { get; set; } = 1;
+        public int RoundId { get; set; } = 1;
+        public int HelperId { get; set; } = 1;
+        public int  newRoundNo { get; set; } = 0;
+        public string newName { get; set; } = "";
+        public string newTask { get; set; } = "";
     }
+
 
     public Values values { get; set; } = new Values();
 
@@ -181,4 +177,26 @@ else
         await UpdateData();
 
     }
+
+    bool CheckRound()
+    {
+        if (values.newRoundNo < 1)
+            return true;
+        List<int> roundNos = (from r in Rounds select r.No).ToList();
+        return roundNos.Contains(values.newRoundNo);
+    }
+
+    async Task AddActivity()
+    {
+        Activity activity = new Activity
+        {
+            Helper = new Helper { Name = values.newName },
+            Round = new Round { No = values.newRoundNo },
+            Task = values.newTask
+        };
+
+        await service.AddActivity(activity);
+        await UpdateData(); ;
+    }
+}
 }

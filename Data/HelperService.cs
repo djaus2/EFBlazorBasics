@@ -13,7 +13,11 @@ namespace EFBlazorBasics.Data
         Task<List<Helper>> GetHelpers();
         Task<List<Round>> GetRounds(); 
         Task AddSomeData();
+        Task UpdateActivityTask(int ActivityId, string newTask);
+        Task UpdateActivityHelper(int ActivityId, Helper helper);
+        Task UpdateActivity(Activity activity);
         Task AddActivitys(List<Activity> activitys);
+        Task AddActivity(Activity activity);
         //Task AddRounds(List<Round> rounds);
         //Task AddHelpers(List<Helper> helpers);
         Task DeleteHelper(int Id);
@@ -102,6 +106,48 @@ namespace EFBlazorBasics.Data
         {
            var activitys = JsonConvert.DeserializeObject<List<Activity>>(ActivitysJson);
             await AddActivitys(activitys);
+        }
+
+        public async Task AddActivity(Activity activity)
+        {
+             _context.Activitys.Add(activity);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateActivityTask(int ActivityId, string newTask)
+        {
+            var activitys = await GetActivitys();
+            var active = from a in activitys where a.Id == ActivityId select a;
+            Activity activity = active.FirstOrDefault();
+            if (activity != null)
+            {
+                activity.Task = newTask;
+                _context.Activitys.Update(activity);
+                await _context.SaveChangesAsync();
+            }
+            
+        }
+
+        public async Task UpdateActivityHelper(int ActivityId, Helper helper)
+        {
+            var activitys = await GetActivitys();
+            var active = from a in activitys where a.Id == ActivityId select a;
+            Activity activity = active.FirstOrDefault();
+            if (activity != null)
+            {
+                activity.Helper = helper;
+                _context.Activitys.Update(activity);
+                await _context.SaveChangesAsync();
+            }
+
+        }
+        public async Task UpdateActivity(Activity activity)
+        {
+            if (activity != null)
+            {
+                _context.Activitys.Update(activity);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

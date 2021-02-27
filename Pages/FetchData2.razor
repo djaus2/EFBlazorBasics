@@ -1,0 +1,203 @@
+﻿@page "/fetchdata2"
+@using EFBlazorBasics.Data
+@inject IHelperService service
+
+
+<h1>Helper Volunteers - Cascade Add 1</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+<h2>Activitys</h2>
+@if (Activitys == null)
+{
+    <p><em>Loading Activities...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Round</th>
+                <th>Helper</th>
+                <th>Task</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var activity in Activitys)
+            {
+                <tr>
+                    <td>@activity.Id</td>
+                    <td>@activity.Round.No</td>
+                    @if (@activity.Helper != null)
+                    {
+                        <td>@activity.Helper.Name</td>
+                    }
+                    else
+                    {
+                        <td>NULL</td>
+                    }
+                    <td>@activity.Task</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+    
+
+<h2>Helpers</h2>
+@if (Helpers == null)
+{
+    <p><em>Loading Helpers...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var hlpr in Helpers)
+            {
+                <tr>
+                    <td>@hlpr.Id</td>
+                    <td>@hlpr.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h2>Rounds</h2>
+@if (Rounds == null)
+{
+    <p><em>Loading Rounds...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Round No.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var round in Rounds)
+            {
+                <tr>
+                    <td>@round.Id</td>
+                    <td>@round.No</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<EditForm Model="@values">    
+   <table class=" table">
+       <tr>
+            @if (!((string.IsNullOrEmpty(values.newName)) 
+                || CheckRound()
+                || (string.IsNullOrEmpty(values.newTask))))
+            {
+                <td><button @onclick="@AddActivity">Add New Activity</button></td>
+            }
+            else {
+                <td><i>Please new enter Values:</i></td> 
+            }
+       <td>
+           <b><i>Round No:</i></b>&nbsp;<InputNumber @bind-Value="values.newRoundNo" />
+       </td>
+       <td>
+           <b><i>New Helper Name:</i></b>&nbsp;<InputText @bind-Value="values.newName" />
+       </td>
+       <td>
+           <b><i>New Task:</i></b>&nbsp;<InputText @bind-Value="values.newTask" />
+       </td>
+       </tr>
+    </table>
+
+</EditForm>
+
+
+@code {
+    private List<Activity> Activitys;
+    private List<Helper> Helpers;
+    private List<Round> Rounds;
+
+    public class Values {
+        public int ActivityId { get; set; } = 1;
+        public int RoundId { get; set; } = 1;
+        public int HelperId { get; set; } = 1;
+        public int  newRoundNo { get; set; } = 0;
+        public string newName { get; set; } = "";
+        public string newTask { get; set; } = "";
+    }
+
+
+    public Values values { get; set; } = new Values();
+
+    private async Task DeleteRound()
+    {
+        await service.DeleteRound(values.RoundId);
+        await UpdateData();
+    }
+
+    private async Task DeleteHelper()
+    {
+        await service.DeleteHelper(values.HelperId);
+        await UpdateData();
+    }
+
+    private async Task DeleteActivity()
+    {
+        await service.DeleteActivity(values.ActivityId);
+        await UpdateData();
+    }
+
+    async Task UpdateData()
+    {
+        Activitys = await service.GetActivitys();
+        Helpers = await service.GetHelpers();
+        Rounds = await service.GetRounds();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        values  = new Values();
+        Activitys = await service.GetActivitys();
+        if ((Activitys==null) || (Activitys.Count() == 0))
+        {
+            await service.AddSomeData();
+        }
+        await UpdateData();
+
+    }
+
+    bool CheckRound()
+    {
+        if (values.newRoundNo < 1)
+            return true;
+        List<int> roundNos = (from r in Rounds select r.No).ToList();
+        return roundNos.Contains(values.newRoundNo);
+    }
+
+    void AddActivity()
+    {
+        Activity activity = new Activity
+        {
+            Helper = new Helper { Name = values.newName },
+            Round = new Round { No = values.newRoundNo },
+            Task = values.newTask
+        };
+
+        Activitys.Add(activity);
+        StateHasChanged();
+    }
+}
+}

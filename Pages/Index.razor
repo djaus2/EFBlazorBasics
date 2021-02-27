@@ -2,11 +2,16 @@
 
 <h1>Helpers App</h1>
 
-See Entity Framework Core functionality on FetchData page.<br/>
+See Entity Framework Core functionality on Add Data pages.<br/>
 Demonstrates CRUD operations in the Helpers App context.<br/> 
-Includes Cascade delete and other features.<br/> 
+<b>Includes Cascade delete</b> and other features.<br/> 
 <ul>
     <li>Note that deletion of a Round deletes any activity in that round ... <b>Cascade Delete</b></li>
     <li>Whereas deletion of a Helper does not delete an activity that that Helper has volunteered for.<br/> It nulls that entry in the activity. </li>
+</ul>
+<b>In this version of the app can add new Activties with a new Helper, Round No and Task.</b><br/>
+<ul>
+    <li>For Add Data 1 the new activity is in-memory only.<br/>Change to Add Data 2 and its not there.</li>
+    <li>For Add Data 2 it is added to the database along with the new Round and Helper.<br/>Change to Add Data 1 and it's still there.</li>
 </ul>
 
