@@ -5,7 +5,7 @@
 
 <h1>Helper Volunteers - Update Activity - Submit Entity</h1>
 
-<p>This component demonstrates updating a Db Entity via a service by passing entity Id and new property value.</p>
+<p>This component demonstrates updating a Db Entity via a service by passing the updated Entity.</p>
 
 @if (!((Activitys == null)||(Rounds == null)||(Helpers == null)))
 {
@@ -19,8 +19,7 @@
             }
             else
             {
-                <td><i>Please enter new value:</i></td>
-
+                <td><i>Please select existing activity Id and enter new Task value:</i></td>
             }
             <td>
                 <b><i>Select Activity Id:</i></b>&nbsp;<InputNumber @bind-Value="values.ActivityId" />
@@ -37,8 +36,7 @@
             }
             else
             {
-                <td><i>Please enter new value:</i></td>
-
+                <td><i>Please select existing activity Id and its new helper Id:</i></td>
             }
             <td>
                 <b><i>Select Activity Id:</i></b>&nbsp;<InputNumber @bind-Value="values.ActivityId" />
