@@ -1,48 +1,11 @@
-﻿@page "/fetchdata1"
+﻿@page "/fetchdataonly"
 @using EFBlazorBasics.Data
 @inject IHelperService service
 
 
-<h1>Helper Volunteers - Cascade Delete</h1>
+<h1>Helper Volunteers - Current Data in Db</h1>
 
-<p>This component demonstrates deleting Db entities via a service.</p>
-
-@if (!((Activitys == null)||(Rounds == null)||(Helpers == null)))
-{
-    <EditForm Model="@values">    
-        <table class="table">
-            <tr>
-                <td>
-                    <button @onclick="@DeleteRound">Delete Round</button>
-                &nbsp;
-                    <InputNumber @bind-Value="values.RoundId" />
-                </td>
-            </tr>
-        </table>
-        <table class="table">
-            <tr>
-                <td>
-                    <button @onclick="@DeleteActivity">Delete Activity</button>
-                &nbsp;
-                    <InputNumber @bind-Value="values.ActivityId" />
-                </td>
-            </tr>
-        </table>
-        <table class="table">
-            <tr>
-                <td>
-                    <button @onclick="@DeleteHelper">Delete Helper</button>
-                &nbsp;;
-                    <InputNumber @bind-Value="values.HelperId" />
-                </td>
-            </tr>
-        </table>
-    </EditForm>
-}
-else
-{
-    <p><em>Loading Activities, Rounds and Helpers...</em></p>
-}
+<p>This component demonstrates fetching data from a service.</p>
 
 <h2>Activitys</h2>
 @if (Activitys == null)
@@ -51,7 +14,13 @@ else
 }
 else
 {
-
+    <table class="table">
+    <tr>
+        <td>
+            <b><i>Clear Db and Reload Initial Data:</i></b>&nbsp;;<button @onclick="@ReInit">Re-init Db</button>
+        </td>
+        </tr>
+    </table>
     <table class="table">
         <thead>
             <tr>
@@ -142,36 +111,6 @@ else
     private List<Helper> Helpers;
     private List<Round> Rounds;
 
-    public class Values {
-        public int ActivityId { get; set; } = 1;
-        public int RoundId { get; set; } = 1;
-        public int HelperId { get; set; } = 1;
-        public int  newRoundNo { get; set; } = 0;
-        public string newName { get; set; } = "";
-        public string newTask { get; set; } = "";
-    }
-
-
-
-    public Values values { get; set; } = new Values();
-
-    private async Task DeleteRound()
-    {
-        await service.DeleteRound(values.RoundId);
-        await UpdateData();
-    }
-
-    private async Task DeleteHelper()
-    {
-        await service.DeleteHelper(values.HelperId);
-        await UpdateData();
-    }
-
-    private async Task DeleteActivity()
-    {
-        await service.DeleteActivity(values.ActivityId);
-        await UpdateData();
-    }
 
     async Task UpdateData()
     {
@@ -182,7 +121,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        values  = new Values();
         Activitys = await service.GetActivitys();
         if ((Activitys==null) || (Activitys.Count() == 0))
         {
@@ -192,16 +130,11 @@ else
 
     }
 
-    void AddActivity()
+    async Task ReInit()
     {
-        Activity activity = new Activity
-        {
-            Helper = new Helper { Name = values.newName },
-            Round = new Round { No = values.newRoundNo },
-            Task = values.newTask
-        };
-
-        Activitys.Add(activity);
-        StateHasChanged();
+        await service.AddSomeData();
+        await UpdateData();
     }
+
 }
+

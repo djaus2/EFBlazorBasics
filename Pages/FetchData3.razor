@@ -3,9 +3,44 @@
 @inject IHelperService service
 
 
-<h1>Helper Volunteers - Cascade Add Db Save</h1>
+<h1>Helper Volunteers - Cascade Add Entity to Db- Save</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>This component demonstrates adding Db Entities and saving via a service.</p>
+
+@if (!((Activitys == null)||(Rounds == null)||(Helpers == null)))
+{
+    <EditForm Model="@values">    
+       <table class=" table">
+           <tr>
+                @if (!((string.IsNullOrEmpty(values.newName)) 
+                    || CheckRound()
+                    || (string.IsNullOrEmpty(values.newTask))))
+                {
+                    <td><button @onclick="@AddActivity">Add New Activity to Db</button></td>
+                }
+                else {
+                    <td><i>Please new enter Values:</i></td> 
+                }
+           <td>
+               <b><i>Round No:</i></b>&nbsp;<InputNumber @bind-Value="values.newRoundNo" />
+           </td>
+           <td>
+               <b><i>New Helper Name:</i></b>&nbsp;<InputText @bind-Value="values.newName" />
+           </td>
+           <td>
+               <b><i>New Task:</i></b>&nbsp;<InputText @bind-Value="values.newTask" />
+           </td>
+           </tr>
+           <tr>
+               <td>Select unique round number, enter helper name and task then click on left above.<br/>Button to action will then appear.</td>
+           </tr>
+        </table>
+    </EditForm>
+}
+else
+{
+    <p><em>Loading Activities, Rounds and Helpers...</em></p>
+}
 
 <h2>Activitys</h2>
 @if (Activitys == null)
@@ -98,7 +133,7 @@ else
     </table>
 }
 
-<EditForm Model="@values">    
+@*<EditForm Model="@values">    
    <table class=" table">
        <tr>
             @if (!((string.IsNullOrEmpty(values.newName)) 
@@ -121,7 +156,7 @@ else
             </td>
        </tr>
     </table>
-</EditForm>
+</EditForm>*@
 
 
 @code {
@@ -199,4 +234,4 @@ else
         await UpdateData(); ;
     }
 }
-}
+

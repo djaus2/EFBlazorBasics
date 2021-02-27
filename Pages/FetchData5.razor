@@ -1,9 +1,9 @@
-﻿@page "/fetchdata4"
+﻿@page "/fetchdata5"
 @using EFBlazorBasics.Data
 @inject IHelperService service
 
 
-<h1>Helper Volunteers - Update Activity - Use Activity Id</h1>
+<h1>Helper Volunteers - Update Activity - Submit Entity</h1>
 
 <p>This component demonstrates updating a Db Entity via a service by passing entity Id and new property value.</p>
 
@@ -11,11 +11,11 @@
 {
 <EditForm Model="@values">    
     <table class=" table">
-        <tr><large><b>Change an entity property that is of value type.</b></large></tr>
+        <tr><large><b>Change an entity property that is of value type.</b></large></tr>          
         <tr>
             @if (!(string.IsNullOrEmpty(values.newTask)))
             {
-                <td><button @onclick="@UpdateActivity">Update Activity Task via ActivityId</button></td>
+                <td><button @onclick="@UpdateActivity2">Update Activity Task Submit Entity (the Activity)</button></td>
             }
             else
             {
@@ -33,11 +33,12 @@
         <tr>
             @if (CheckHelperId())
             {
-                <td><button @onclick="@UpdateActivity3">Update Activity Helper via ActivityId</button></td>
+                <td><button @onclick="@UpdateActivity4">Update Activity Helper Submit Entity (the Activity)</button></td>
             }
             else
             {
                 <td><i>Please enter new value:</i></td>
+
             }
             <td>
                 <b><i>Select Activity Id:</i></b>&nbsp;<InputNumber @bind-Value="values.ActivityId" />
