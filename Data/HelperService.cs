@@ -11,7 +11,7 @@ namespace EFBlazorBasics.Data
     {
         void SetContextSaveChangesAsync(bool save);
         bool GetContextSaveChangesAsync();
-        void MarkContextEntityStateAsChanged(bool mark);
+        void SetMarkContextEntityStateAsChanged(bool mark);
         bool GetMarkContextEntityStateAsChanged();
         Task<List<Activity>> GetActivitys();
         Task<List<Helper>> GetHelpers();
@@ -49,7 +49,7 @@ namespace EFBlazorBasics.Data
             return contextSaveChangesAsync;
         }
         private bool markContextEntityStateAsChanged { get; set; } = false;
-        public void MarkContextEntityStateAsChanged(bool mark)
+        public void SetMarkContextEntityStateAsChanged(bool mark)
         {
             markContextEntityStateAsChanged = mark;
         }

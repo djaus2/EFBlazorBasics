@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using EFBlazorBasics.Data
+@inject IHelperService service
 
 <h1>Helpers App</h1>
 
@@ -14,4 +16,37 @@ Demonstrates CRUD operations in the Helpers App context.<br/>
     <li>For Add Data 1 the new activity is in-memory only.<br/>Change to Add Data 2 and its not there.</li>
     <li>For Add Data 2 it is added to the database along with the new Round and Helper.<br/>Change to Add Data 1 and it's still there.</li>
 </ul>
+<ul>
+    <li>Enable ContextSaveChangesAsync:&nbsp;;
+    <font color="blue">@contextSaveChangesAsync</font>&nbsp;
+    <button @onclick="@ToggleSaveChanges">Toggle</button></li>
+    <li>Enable MarkContextEntityStateAsChanged:&nbsp;
+    <font color="blue">@markContextEntityStateAsChanged</font>&nbsp;;
+    <button @onclick="@ToggleMark">Toggle</button></li>
+</ul>
+
+@code{
+    bool contextSaveChangesAsync { get; set; }
+    bool markContextEntityStateAsChanged { get; set; }
+
+    void ToggleSaveChanges()
+    {
+        bool res = service.GetContextSaveChangesAsync();
+        service.SetContextSaveChangesAsync(!res);
+        contextSaveChangesAsync = service.GetContextSaveChangesAsync();
+    }
+    
+    void ToggleMark()
+    {
+        bool res = service.GetMarkContextEntityStateAsChanged();
+        service.SetMarkContextEntityStateAsChanged(!res);
+        markContextEntityStateAsChanged = service.GetMarkContextEntityStateAsChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        contextSaveChangesAsync = service.GetContextSaveChangesAsync();
+        markContextEntityStateAsChanged = service.GetMarkContextEntityStateAsChanged();
+    }
+}
 
