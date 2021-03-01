@@ -1,21 +1,21 @@
-﻿@page "/fetchdata5"
+﻿@page "/fetchdata6"
 @using EFBlazorBasics.Data
 @inject IHelperService service
 
 
-<h1>Helper Volunteers - Update Activity - Submit Entity</h1>
+<h1>Helper Volunteers - Update Activity - Copy Entity</h1>
 
-<p>This component demonstrates updating a Db Entity via a service by passing the updated Entity.</p>
+<p>This component demonstrates updating a Db Entity via a service that copies the properties of the updated Entity to the db record.</p>
 
 @if (!((Activitys == null)||(Rounds == null)||(Helpers == null)))
 {
     @if(activity != null)
     {
-    <EditForm Model="@activity" OnSubmit="UpdateActivity">  
+    <EditForm Model="@activity" OnSubmit="UpdateActivityByCopy">  
    <table class="table">
-        <tr><td colspan="4"><large><b>Change entity properties by direct update of entity in database.</b></large></td></tr>
+        <tr><td colspan=4><large><b>Change entity properties by copying to entity retrieved from database.</b></large></td></tr>
         <tr>
-            <td colspan=2><button type="submit">Update Enity - Submit Entity (the Activity)</button></td>
+            <td colspan=2><button type="submit">Update Activity - Copy Entity (the Activity)</button></td>
         </tr>
 
             @if (@Activitys != null)
@@ -211,9 +211,9 @@ else
 
     }
 
-    async Task UpdateActivity()
+    async Task UpdateActivityByCopy()
     {
-        await service.UpdateActivity(activity);
+        await service.UpdateActivityByCopy(activity);
         await UpdateData();
     }
 }

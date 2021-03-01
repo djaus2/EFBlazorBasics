@@ -16,6 +16,7 @@ namespace EFBlazorBasics.Data
         Task UpdateActivityTask(int ActivityId, string newTask);
         Task UpdateActivityHelper(int ActivityId, Helper helper);
         Task UpdateActivity(Activity activity);
+        Task UpdateActivityByCopy(Activity activity);
         Task AddActivitys(List<Activity> activitys);
         Task AddActivity(Activity activity);
         //Task AddRounds(List<Round> rounds);
@@ -70,37 +71,52 @@ namespace EFBlazorBasics.Data
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Deleting a helper doesn't delete its activities
+        /// </summary>
         public async Task DeleteHelper(int Id)
         {
-            var helperLst = from h in _context.Helpers where h.Id == Id select h;
-            if (helperLst.Count() != 0)
-            {
-                _context.Helpers.Remove(helperLst.FirstOrDefault());
+            var helpers = from h in _context.Helpers where h.Id == Id select h;
+            Helper helperdb = helpers.FirstOrDefault();
+            if (helperdb != null)
+            { 
+                _context.Helpers.Remove(helperdb);
                 await _context.SaveChangesAsync();
             }
         }
 
+        /// <summary>
+        /// Deleting an activity doesn't require its round nor helper to be deleted.
+        /// </summary>
         public async Task DeleteActivity(int Id)
         {
-            var activityLst = from a in _context.Activitys where a.Id == Id select a;
-            if (activityLst.Count() != 0)
+            var activitys = from a in _context.Activitys where a.Id == Id select a;
+            Activity activitydb = activitys.FirstOrDefault();
+            if (activitydb != null)
             {
-                _context.Activitys.Remove(activityLst.First());
+                _context.Activitys.Remove(activitydb);
                 await _context.SaveChangesAsync();
             }
-        }
+    }
 
-        // Cascade Deletion
+        /// <summary>
+        /// Cascade Deletion
+        /// If a round is deleted then all of its activities need deletion.
+        /// </summary>
         public async Task DeleteRound(int Id)
         {
-            var roundLst = _context.Rounds.Where(e => e.Id == Id).Include(e => e.Activitys);
-            if (roundLst.Count() != 0)
+            var rounds = _context.Rounds.Where(e => e.Id == Id).Include(e => e.Activitys);
+            Round rounddb = rounds.FirstOrDefault();
+            if (rounddb != null)
             {
-                _context.Rounds.Remove(roundLst.First());
+                _context.Rounds.Remove(rounddb);
                 await _context.SaveChangesAsync();
             }
         }
 
+        /// <summary>
+        /// Generate some avtivities, with generated rounds and helpers.
+        /// </summary>
         string ActivitysJson = "[{\"Round\":{\"No\":1},\"Helper\":{\"Name\":\"John Marshall\"}, \"Task\":\"Shot Put\"},{ \"Round\":{ \"No\":2},\"Helper\":{ \"Name\":\"Sue Burrows\"},\"Task\":\"Marshalling\"},{ \"Round\":{ \"No\":3},\"Helper\":{ \"Name\":\"Jimmy Beans\"},\"Task\":\"Discus\"}]";
         public async Task AddSomeData()
         {
@@ -118,11 +134,11 @@ namespace EFBlazorBasics.Data
         {
             var activitys = await GetActivitys();
             var active = from a in activitys where a.Id == ActivityId select a;
-            Activity activity = active.FirstOrDefault();
-            if (activity != null)
+            Activity activitydb = active.FirstOrDefault();
+            if (activitydb != null)
             {
-                activity.Task = newTask;
-                _context.Activitys.Update(activity);
+                activitydb.Task = newTask;
+                _context.Activitys.Update(activitydb);
                 await _context.SaveChangesAsync();
             }
             
@@ -132,11 +148,11 @@ namespace EFBlazorBasics.Data
         {
             var activitys = await GetActivitys();
             var active = from a in activitys where a.Id == ActivityId select a;
-            Activity activity = active.FirstOrDefault();
-            if (activity != null)
+            Activity activitydb = active.FirstOrDefault();
+            if (activitydb != null)
             {
-                activity.Helper = helper;
-                _context.Activitys.Update(activity);
+                activitydb.Helper = helper;
+                _context.Activitys.Update(activitydb);
                 await _context.SaveChangesAsync();
             }
 
@@ -147,6 +163,24 @@ namespace EFBlazorBasics.Data
             {
                 _context.Activitys.Update(activity);
                 await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task UpdateActivityByCopy(Activity activity)
+        {
+            var activitys = await GetActivitys();
+            var active = from a in activitys where a.Id == activity.Id select a;
+            Activity activitydb = active.FirstOrDefault();
+            if (activitydb != null)
+            {
+                if (activity != null)
+                {
+                    activitydb.Round = activity.Round;
+                    activitydb.Helper = activity.Helper;
+                    activitydb.Task = activity.Task;
+                    _context.Activitys.Update(activitydb);
+                    await _context.SaveChangesAsync();
+                }
             }
         }
     }
