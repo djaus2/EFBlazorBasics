@@ -9,6 +9,10 @@ namespace EFBlazorBasics.Data
 {
     public interface IHelperService
     {
+        void SetContextSaveChangesAsync(bool save);
+        bool GetContextSaveChangesAsync();
+        void MarkContextEntityStateAsChanged(bool mark);
+        bool GetMarkContextEntityStateAsChanged();
         Task<List<Activity>> GetActivitys();
         Task<List<Helper>> GetHelpers();
         Task<List<Round>> GetRounds(); 
@@ -32,6 +36,26 @@ namespace EFBlazorBasics.Data
         public HelperService(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+
+        private bool contextSaveChangesAsync { get; set; } = true;
+        public void SetContextSaveChangesAsync(bool save)
+        {
+            contextSaveChangesAsync = save;
+        }
+        public bool GetContextSaveChangesAsync()
+        {
+            return contextSaveChangesAsync;
+        }
+        private bool markContextEntityStateAsChanged { get; set; } = false;
+        public void MarkContextEntityStateAsChanged(bool mark)
+        {
+            markContextEntityStateAsChanged = mark;
+        }
+        public bool GetMarkContextEntityStateAsChanged()
+        {
+            return markContextEntityStateAsChanged;
         }
 
         public async Task<List<Activity>> GetActivitys()
@@ -68,7 +92,9 @@ namespace EFBlazorBasics.Data
             await _context.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT('Activitys', RESEED, 0)");
            // Save all
             _context.Activitys.AddRange(activitys);
-            await _context.SaveChangesAsync();
+            
+            if (contextSaveChangesAsync)
+                await _context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -81,7 +107,10 @@ namespace EFBlazorBasics.Data
             if (helperdb != null)
             { 
                 _context.Helpers.Remove(helperdb);
-                await _context.SaveChangesAsync();
+                if(markContextEntityStateAsChanged)
+                    _context.Entry(helperdb).State = EntityState.Modified;
+                if (contextSaveChangesAsync)
+                    await _context.SaveChangesAsync();
             }
         }
 
@@ -95,7 +124,10 @@ namespace EFBlazorBasics.Data
             if (activitydb != null)
             {
                 _context.Activitys.Remove(activitydb);
-                await _context.SaveChangesAsync();
+                if (markContextEntityStateAsChanged)
+                    _context.Entry(activitydb).State = EntityState.Modified;
+                if (contextSaveChangesAsync)
+                    await _context.SaveChangesAsync();
             }
     }
 
@@ -110,7 +142,10 @@ namespace EFBlazorBasics.Data
             if (rounddb != null)
             {
                 _context.Rounds.Remove(rounddb);
-                await _context.SaveChangesAsync();
+                if (markContextEntityStateAsChanged)
+                    _context.Entry(rounddb).State = EntityState.Modified;
+                if (contextSaveChangesAsync)
+                    await _context.SaveChangesAsync();
             }
         }
 
@@ -127,7 +162,8 @@ namespace EFBlazorBasics.Data
         public async Task AddActivity(Activity activity)
         {
              _context.Activitys.Add(activity);
-            await _context.SaveChangesAsync();
+            if (contextSaveChangesAsync)
+                await _context.SaveChangesAsync();
         }
 
         public async Task UpdateActivityTask(int ActivityId, string newTask)
@@ -139,7 +175,10 @@ namespace EFBlazorBasics.Data
             {
                 activitydb.Task = newTask;
                 _context.Activitys.Update(activitydb);
-                await _context.SaveChangesAsync();
+                if (markContextEntityStateAsChanged)
+                    _context.Entry(activitydb).State = EntityState.Modified;
+                if (contextSaveChangesAsync)
+                    await _context.SaveChangesAsync();
             }
             
         }
@@ -153,7 +192,10 @@ namespace EFBlazorBasics.Data
             {
                 activitydb.Helper = helper;
                 _context.Activitys.Update(activitydb);
-                await _context.SaveChangesAsync();
+                if (markContextEntityStateAsChanged)
+                    _context.Entry(activitydb).State = EntityState.Modified;
+                if (contextSaveChangesAsync)
+                    await _context.SaveChangesAsync();
             }
 
         }
@@ -162,7 +204,10 @@ namespace EFBlazorBasics.Data
             if (activity != null)
             {
                 _context.Activitys.Update(activity);
-                await _context.SaveChangesAsync();
+                if (markContextEntityStateAsChanged)
+                    _context.Entry(activity).State = EntityState.Modified;
+                if (contextSaveChangesAsync)
+                    await _context.SaveChangesAsync();
             }
         }
 
@@ -179,7 +224,10 @@ namespace EFBlazorBasics.Data
                     activitydb.Helper = activity.Helper;
                     activitydb.Task = activity.Task;
                     _context.Activitys.Update(activitydb);
-                    await _context.SaveChangesAsync();
+                    if (markContextEntityStateAsChanged)
+                        _context.Entry(activitydb).State = EntityState.Modified;
+                    if (contextSaveChangesAsync)
+                        await _context.SaveChangesAsync();
                 }
             }
         }
