@@ -341,3 +341,4 @@ healthchecksdb
 /Properties/serviceDependencies.EFBlazorBasics - Web Deploy.json
 /Properties/ServiceDependencies/EFBlazorBasics - Web Deploy/mssql1.arm.json
 /Properties/ServiceDependencies/EFBlazorBasics - Web Deploy/profile.arm.json
+/info.txt
