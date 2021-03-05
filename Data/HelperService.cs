@@ -39,7 +39,7 @@ namespace EFBlazorBasics.Data
         }
 
 
-        private bool contextSaveChangesAsync { get; set; } = true;
+        private static bool contextSaveChangesAsync { get; set; } = true;
         public void SetContextSaveChangesAsync(bool save)
         {
             contextSaveChangesAsync = save;
@@ -48,7 +48,7 @@ namespace EFBlazorBasics.Data
         {
             return contextSaveChangesAsync;
         }
-        private bool markContextEntityStateAsChanged { get; set; } = false;
+        private static bool markContextEntityStateAsChanged { get; set; } = false;
         public void SetMarkContextEntityStateAsChanged(bool mark)
         {
             markContextEntityStateAsChanged = mark;
