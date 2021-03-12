@@ -1,9 +1,9 @@
 # EFBlazorBasics CRUD Operations
 Demonstrates getting started with Code First Entity Framework Core with a Blazor Server app.
 
-Try the app on <a href="https://efblazorbasics.azurewebsites.net/">azurewebsites.net</a>
+Try the app on <a href="https://efblazorbasicssvronly.azurewebsites.net">azurewebsites.net</a> **Now available _again_ here.**
 
-Mirrors [djaus2/EFBlazorBasics_Wasm](https://github.com/djaus2/EFBlazorBasics_Wasm) _(under development)_ which is basic EF CRUD with a a Blazor WASM app.
+Mirrors [djaus2/EFBlazorBasics_Wasm](https://github.com/djaus2/EFBlazorBasics_Wasm) which is basic EF CRUD with a a Blazor WASM app.
 
 View Blog Posts [Blazor Helpers App posts on https://davidjones.sportronics.com.au](https://davidjones.sportronics.com.au/search.html?query=Blazor+Helpers+App)
 
