@@ -3,7 +3,7 @@
 @inject IHelperService service
 
 
-<h1>Helper Volunteers - Current Data in Db</h1>
+<h1>Helper Activitys - Current Data in Db</h1>
 
 <p>This component demonstrates fetching data from a service, without Includes.</p>
 <p>Uses <code>var list = await _context.Activitys.ToListAsync();</code></p>
@@ -15,13 +15,6 @@
 }
 else
 {
-    <table class="table">
-    <tr>
-        <td>
-            <b><i>Clear Db and Reload Initial Data:</i></b>&nbsp;;<button @onclick="@ReInit">Re-init Db</button>
-        </td>
-        </tr>
-    </table>
     <table class="table">
         <thead>
             <tr>
@@ -70,20 +63,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Activitys = await service.GetActivitys();
-        if ((Activitys==null) || (Activitys.Count() == 0))
-        {
-            await service.AddSomeData();
-        }
-        await UpdateData();
-
-    }
-
-    async Task ReInit()
-    {
-        await service.AddSomeData();
         await UpdateData();
     }
+
+
 
 }
 

@@ -5,7 +5,7 @@
 
 <h1>Helper Volunteers - Cascade Delete</h1>
 
-<p>This component demonstrates deleting Db entities via a service.</p>
+<p>This page demonstrates deleting Db entities via a service.</p>
 
 @if (!((Activitys == null)||(Rounds == null)||(Helpers == null)))
 {
@@ -14,7 +14,7 @@
             <tr>
                 <td>
                     <button @onclick="@DeleteRound">Delete Round</button>
-                &nbsp;Selert Id&nbsp;
+                &nbsp;Select Id&nbsp;
                     <InputNumber @bind-Value="values.RoundId" />
                 </td>
             </tr>
