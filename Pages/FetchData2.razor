@@ -5,7 +5,7 @@
 
 <h1>Helper Volunteers - Add Entity</h1>
 
-<p>This component demonstrates adding Db entities locally.</p>
+<p>This component demonstrates creating entities locally, and not saving to db.</p>
 
 @if (!((Activitys == null)||(Rounds == null)||(Helpers == null)))
 {
@@ -22,13 +22,13 @@
                     <td><i>Please new enter Values:</i></td> 
                 }
            <td>
-               <b><i>Round No:</i></b>&nbsp;<InputNumber @bind-Value="values.newRoundNo" />
+               <b><i>NEW Round No:</i></b>&nbsp;<InputNumber @bind-Value="values.newRoundNo" />
            </td>
            <td>
-               <b><i>New Helper Name:</i></b>&nbsp;<InputText @bind-Value="values.newName" />
+               <b><i>NEW Helper Name:</i></b>&nbsp;<InputText @bind-Value="values.newName" />
            </td>
            <td>
-               <b><i>New Task:</i></b>&nbsp;<InputText @bind-Value="values.newTask" />
+               <b><i>NEW Task:</i></b>&nbsp;<InputText @bind-Value="values.newTask" />
            </td>
            </tr>
            <tr>

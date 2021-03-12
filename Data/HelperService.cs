@@ -14,6 +14,7 @@ namespace EFBlazorBasics.Data
         void SetMarkContextEntityStateAsChanged(bool mark);
         bool GetMarkContextEntityStateAsChanged();
         Task<List<Activity>> GetActivitys();
+        Task<List<Activity>> GetActivitysAlt();
         Task<List<Helper>> GetHelpers();
         Task<List<Round>> GetRounds(); 
         Task AddSomeData();
@@ -61,6 +62,12 @@ namespace EFBlazorBasics.Data
         public async Task<List<Activity>> GetActivitys()
         {
             var list = await _context.Activitys.Include(activity => activity.Helper).Include(activity => activity.Round).ToListAsync();
+            return list;
+        }
+
+        public async Task<List<Activity>> GetActivitysAlt()
+        {
+            var list = await _context.Activitys.ToListAsync();
             return list;
         }
 

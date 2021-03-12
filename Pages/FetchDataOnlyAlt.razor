@@ -1,12 +1,12 @@
-﻿@page "/fetchdataonly"
+﻿@page "/fetchdataalt"
 @using EFBlazorBasics.Data
 @inject IHelperService service
 
 
 <h1>Helper Volunteers - Current Data in Db</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
-<p>Uses <code>var list = await _context.Activitys.Include(activity => activity.Helper).Include(activity => activity.Round).ToListAsync();</code></p>
+<p>This component demonstrates fetching data from a service, without Includes.</p>
+<p>Uses <code>var list = await _context.Activitys.ToListAsync();</code></p>
 
 <h2>Activitys</h2>
 @if (Activitys == null)
@@ -36,7 +36,14 @@ else
             {
                 <tr>
                     <td>@activity.Id</td>
-                    <td>@activity.Round.No</td>
+                    @if (@activity.Round != null)
+                    {
+                        <td>@activity.Round.No</td>
+                    }
+                    else
+                    {
+                        <td>NULL</td>
+                    }
                     @if (@activity.Helper != null)
                     {
                         <td>@activity.Helper.Name</td>
@@ -52,72 +59,13 @@ else
     </table>
 }
 
-    
-
-<h2>Helpers</h2>
-@if (Helpers == null)
-{
-    <p><em>Loading Helpers...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var hlpr in Helpers)
-            {
-                <tr>
-                    <td>@hlpr.Id</td>
-                    <td>@hlpr.Name</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
-<h2>Rounds</h2>
-@if (Rounds == null)
-{
-    <p><em>Loading Rounds...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Round No.</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var round in Rounds)
-            {
-                <tr>
-                    <td>@round.Id</td>
-                    <td>@round.No</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
 
 @code {
     private List<Activity> Activitys;
-    private List<Helper> Helpers;
-    private List<Round> Rounds;
-
 
     async Task UpdateData()
     {
-        Activitys = await service.GetActivitys();
-        Helpers = await service.GetHelpers();
-        Rounds = await service.GetRounds();
+        Activitys = await service.GetActivitysAlt();
     }
 
     protected override async Task OnInitializedAsync()
