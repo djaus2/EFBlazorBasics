@@ -16,7 +16,10 @@ namespace EFBlazorBasics.Data
         Task<List<Activity>> GetActivitys();
         Task<List<Activity>> GetActivitysAlt();
         Task<List<Helper>> GetHelpers();
-        Task<List<Round>> GetRounds(); 
+        Task<List<Round>> GetRounds();
+
+        List<Activity> GetSampleData();
+
         Task AddSomeData();
         Task UpdateActivityTask(int ActivityId, string newTask);
         Task UpdateActivityHelper(int ActivityId, Helper helper);
@@ -39,6 +42,11 @@ namespace EFBlazorBasics.Data
             _context = context;
         }
 
+        public List<Activity> GetSampleData()
+        {
+            var activitys = JsonConvert.DeserializeObject<List<Activity>>(ActivitysJson).ToList();
+            return activitys;
+        }
 
         private static bool contextSaveChangesAsync { get; set; } = true;
         public void SetContextSaveChangesAsync(bool save)

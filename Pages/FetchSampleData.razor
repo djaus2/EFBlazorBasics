@@ -1,0 +1,119 @@
+﻿@page "/fetchsampledata"
+@using EFBlazorBasics.Data
+@inject IHelperService service
+
+<h1>Sample Activity Data</h1>
+
+<p>This page demonstrates fetching static sample data generated from a json string.</p>
+<p>Nb: No database activity here. Data is generated directly in the HelperService from the Json String:<br />
+<code>[{"Round":{"No":1},"Helper":{"Name":"John Marshall"}, "Task":"Shot Put"},{ "Round":{ "No":2},"Helper":{ "Name":"Sue Burrows"},"Task":"Marshalling"},{ "Round":{ "No":3},"Helper":{ "Name":"Jimmy Beans"},"Task":"Discus"}]</code></p>
+
+<p>Nb: Helpers and Rounds tables are extracted from Activities in the page.</p>
+
+<h2>Activities</h2>
+@if (activitys == null)
+{
+    <p><em>Loading Activitys...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Helper</th>
+                <th>Round.No</th>
+                <th>Task</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var activity in activitys)
+            {
+                <tr>
+                    <td>@activity.Id</td>
+                    <td>@activity.Helper.Name</td>
+                    <td>@activity.Round.No</td>
+                    <td>@activity.Task</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h2>Helpers</h2>
+@if (Helpers == null)
+{
+    <p><em>Loading Helpers...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var hlpr in Helpers)
+            {
+                <tr>
+                    <td>@hlpr.Id</td>
+                    <td>@hlpr.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h2>Rounds</h2>
+@if (Rounds == null)
+{
+    <p><em>Loading Rounds...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Round No.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var round in Rounds)
+            {
+                <tr>
+                    <td>@round.Id</td>
+                    <td>@round.No</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Activity> activitys;
+    private List<Helper> Helpers;
+    private List<Round> Rounds;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        activitys = service.GetSampleData();
+        Helpers = new List<Helper>();
+        Rounds = new List<Round>();
+        foreach (Activity act in activitys)
+        {
+            Helper help = act.Helper;
+            if (help != null)
+                Helpers.Add(help);
+            Round round = act.Round;
+            if (round != null)
+                Rounds.Add(round);
+        }
+        StateHasChanged();
+
+    }
+
+}
