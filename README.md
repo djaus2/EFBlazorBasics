@@ -25,10 +25,6 @@ This is done via a Json string deserialization and saved to the database.
 > Before that, if there are any records still in the database then those records are deleted.
 Also the table Id seeds are zeroed.  
 
-The three lists are then loaded.
-
-There are buttons on the page to delete items.  
-
 Includes Cascade delete and other features.  
 Note that deletion of a Round deletes any activity in that round ... Cascade Delete.  
 Whereas deletion of a Helper does not delete an activity that the Helper has volunteered for.
