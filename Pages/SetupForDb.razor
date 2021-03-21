@@ -1,0 +1,89 @@
+﻿@page "/setup"
+@using EFBlazorBasics.Data
+@inject IHelperService service
+
+<h1>Setup for Database</h1>
+<h2>Add Initial Data <i><small>Done</small></i></h2>
+
+<h3>Getting Started-Get some data: </h3>
+<button @onclick="PopulateDB">Populate/Re-populate database with fresh data</button>
+<br />
+<br />
+<b>Nb: </b><i>This will also clear the database and generate a fresh set of data from the Json String (and save it):.</i>
+<br />
+<code>[{"Round":{"No":1},"Helper":{"Name":"John Marshall"}, "Task":"Shot Put"},{ "Round":{ "No":2},"Helper":{ "Name":"Sue Burrows"},"Task":"Marshalling"},{ "Round":{ "No":3},"Helper":{ "Name":"Jimmy Beans"},"Task":"Discus"}]</code><br/>
+
+<p>Status:&nbsp;<em>@msg</em></p>
+
+<h2>Database Context Updates <i><small>Done</small></i></h2>
+<ul>
+<li> DbContext will track changes to entities.</li>
+<li> Can toggle whether with entity changes
+<ul>
+    <li><code>Context.SaveChanges()</code> and</li>
+    <li><code>Context.Entry(Entity).State = EntityState.Modified</code></li>
+</ul>
+are actioned after Entity:
+<ul>
+    <li>Add</li>
+    <li>Delete</li>
+    <li>Update</li>
+    <li>etc.</li>
+</ul>
+</li>
+<li>Can experiment with whether they are required:
+<ul>
+    <li><font color="blue">@contextSaveChangesAsync</font>&nbsp;
+    <button @onclick="@ToggleSaveChanges">Toggle</button>&nbsp;
+    Enable Db <code>Context.SaveChanges()</code
+    </li>
+    <li><font color="blue">@markContextEntityStateAsChanged</font>&nbsp;
+    <button @onclick="@ToggleMark">Toggle</button>&nbsp;
+    Enable Db <code>Context.Entry(Entity).State = EntityState.Modified</code>
+    </li>
+</ul>
+</li>
+</ul>
+
+@code {
+    string msg = "";
+    bool contextSaveChangesAsync { get; set; }
+    bool markContextEntityStateAsChanged { get; set; }
+
+    void ToggleSaveChanges()
+    {
+        bool res = service.GetContextSaveChangesAsync();
+        service.SetContextSaveChangesAsync(!res);
+        contextSaveChangesAsync = service.GetContextSaveChangesAsync();
+    }
+    
+    void ToggleMark()
+    {
+        bool res = service.GetMarkContextEntityStateAsChanged();
+        service.SetMarkContextEntityStateAsChanged(!res);
+        markContextEntityStateAsChanged = service.GetMarkContextEntityStateAsChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        contextSaveChangesAsync = service.GetContextSaveChangesAsync();
+        markContextEntityStateAsChanged = service.GetMarkContextEntityStateAsChanged();
+        var acts = await service.GetActivitys();
+        msg = $@" There are {acts.Count()} activities.";
+
+    }
+
+    
+    async Task PopulateDB()
+    {
+        msg = " Busy ...";
+        await service.AddSomeData();
+        
+        markContextEntityStateAsChanged = service.GetMarkContextEntityStateAsChanged();
+        contextSaveChangesAsync = service.GetContextSaveChangesAsync();
+        var acts = await service.GetActivitys();
+        msg = $@" Done. There are now {acts.Count()} activities. Now go to next two pages to see the data.";
+    }
+
+}

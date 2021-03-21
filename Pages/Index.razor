@@ -6,8 +6,8 @@
 
 <p><font color="darkred"><b>NOTE: If using this as deployed on Azure, the app and database assume a single user at a time.</b></font></p>
 
-<b>Nb:</b> In fetching data it gets the Activities then lists the Helper and Round entities from that.
-<br /> <i>Could/should actually get those directly from the db if they were greater lists than those used.</i>
+<p>Get Sample Data page just gets some data generated upon request, not using databasebr <br/>
+Setup Db page will generate and refresh the data in the Databse</p>
 <hr />
 
 See Entity Framework Core functionality on Add Data pages.<br/>
@@ -38,21 +38,13 @@ Demonstrates CRUD operations in the Helpers App context.<br/>
 <h2>Database context Updates</h2>
 <ul>
 <li> Can toggle whether with db changes, context save changes and state has changed are applied</li>
-<li>Can experiment with whether they are required:
-<ul>
-    <li>Enable ContextSaveChangesAsync:&nbsp;;
-    <font color="blue">@contextSaveChangesAsync</font>&nbsp;
-    <button @onclick="@ToggleSaveChanges">Toggle</button></li>
-    <li>Enable MarkContextEntityStateAsChanged:&nbsp;
-    <font color="blue">@markContextEntityStateAsChanged</font>&nbsp;;
-    <button @onclick="@ToggleMark">Toggle</button></li>
-</ul>
-</li>
+<li> Can experiment with whether they are required. See Stup Db page.link</li>
 </ul>
 
 @code{
     bool contextSaveChangesAsync { get; set; }
     bool markContextEntityStateAsChanged { get; set; }
+    string msg = "";
 
     void ToggleSaveChanges()
     {
@@ -72,6 +64,15 @@ Demonstrates CRUD operations in the Helpers App context.<br/>
     {
         contextSaveChangesAsync = service.GetContextSaveChangesAsync();
         markContextEntityStateAsChanged = service.GetMarkContextEntityStateAsChanged();
+    }
+
+    private async Task PopulateDB()
+    {
+        msg = " Busy ...";
+        await service.AddSomeData();
+        markContextEntityStateAsChanged = service.GetMarkContextEntityStateAsChanged();
+        contextSaveChangesAsync = service.GetContextSaveChangesAsync();
+        msg = " Done. Now go to next two pages to see the data.";
     }
 }
 
